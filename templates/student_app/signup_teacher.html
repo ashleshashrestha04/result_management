@@ -1,0 +1,690 @@
+{% extends 'base/base.html' %} {% block title %}Teacher Signup - MyAcademia{%
+endblock %} {% block extra_css %}
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    min-height: 100vh;
+  }
+
+  .signup-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .signup-card {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    min-height: 600px;
+  }
+
+  .left-section {
+    flex: 1;
+    background: linear-gradient(135deg, #fef3e2 0%, #fbbf24 100%);
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+  }
+
+  .brand-logo {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    width: 48px;
+    height: 48px;
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .brand-logo i {
+    color: #d97706;
+    font-size: 20px;
+  }
+
+  .illustration-container {
+    margin: 2rem 0;
+  }
+
+  .main-illustration {
+    width: 280px;
+    height: 200px;
+    margin: 0 auto 2rem;
+    background: linear-gradient(135deg, #dc2626 0%, #ea580c 100%);
+    border-radius: 16px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(220, 38, 38, 0.3);
+  }
+
+  .teacher-icon {
+    font-size: 64px;
+    color: white;
+    opacity: 0.9;
+  }
+
+  .floating-elements {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .floating-element {
+    position: absolute;
+    border-radius: 8px;
+    opacity: 0.7;
+  }
+
+  .element-1 {
+    background: #fbbf24;
+    width: 12px;
+    height: 12px;
+    top: 20%;
+    left: 15%;
+    border-radius: 50%;
+  }
+  .element-2 {
+    background: #10b981;
+    width: 16px;
+    height: 16px;
+    top: 30%;
+    right: 20%;
+  }
+  .element-3 {
+    background: #f59e0b;
+    width: 8px;
+    height: 8px;
+    bottom: 25%;
+    left: 20%;
+    border-radius: 50%;
+  }
+  .element-4 {
+    background: #8b5cf6;
+    width: 14px;
+    height: 14px;
+    bottom: 35%;
+    right: 15%;
+    border-radius: 50%;
+  }
+
+  .brand-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .brand-subtitle {
+    color: #64748b;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 320px;
+    margin-bottom: 2rem;
+  }
+
+  .features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #64748b;
+    font-size: 0.95rem;
+  }
+
+  .feature-item i {
+    color: #dc2626;
+    width: 16px;
+    font-size: 14px;
+  }
+
+  .right-section {
+    flex: 1;
+    background: white;
+    padding: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .signup-form-container {
+    max-width: 420px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .form-title {
+    color: #111827;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.025em;
+  }
+
+  .form-subtitle {
+    color: #6b7280;
+    margin-top: 0.25rem;
+    font-size: 0.95rem;
+    font-weight: 400;
+  }
+
+  /* User type selector styles */
+  .user-type-selector {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .user-type-selector h3 {
+    color: #111827;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .user-type-buttons {
+    display: flex;
+    background: #f8fafc;
+    padding: 0.25rem;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .user-type-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #64748b;
+    padding: 0.875rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    text-align: center;
+    font-size: 0.9rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .user-type-btn:hover {
+    color: #475569;
+    background: rgba(99, 102, 241, 0.05);
+    text-decoration: none;
+  }
+
+  .user-type-btn.active {
+    background: white;
+    color: #dc2626;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .user-type-btn i {
+    font-size: 0.875rem;
+  }
+
+  /* Messages styling */
+  .messages-container {
+    margin-bottom: 1.5rem;
+  }
+
+  .alert {
+    padding: 0.875rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    position: relative;
+  }
+
+  .alert-success {
+    color: #065f46;
+    background-color: #ecfdf5;
+    border-color: #a7f3d0;
+  }
+
+  .alert-error,
+  .alert-danger {
+    color: #991b1b;
+    background-color: #fef2f2;
+    border-color: #fecaca;
+  }
+
+  .alert-dismissible .btn-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    padding: 0.375rem;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    opacity: 0.5;
+  }
+
+  .alert-dismissible .btn-close:hover {
+    opacity: 1;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-label {
+    display: block;
+    color: #374151;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    letter-spacing: -0.01em;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    background-color: #fafbfc;
+    box-sizing: border-box;
+    font-family: inherit;
+  }
+
+  .form-control::placeholder {
+    color: #9ca3af;
+    font-weight: 400;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #dc2626;
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
+  }
+
+  .form-control:hover:not(:focus) {
+    border-color: #9ca3af;
+    background-color: white;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .btn-signup {
+    width: 100%;
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 0.875rem 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    letter-spacing: -0.01em;
+  }
+
+  .btn-signup:hover {
+    background: #b91c1c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  }
+
+  .btn-signup:active {
+    transform: translateY(0);
+  }
+
+  .btn-signup:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .login-link {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f1f5f9;
+    color: #6b7280;
+    font-size: 0.9rem;
+  }
+
+  .login-link a {
+    color: #dc2626;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .login-link a:hover {
+    color: #b91c1c;
+    text-decoration: underline;
+  }
+
+  .text-danger {
+    color: #ef4444;
+    font-size: 0.8rem;
+    margin-top: 0.375rem;
+    font-weight: 400;
+  }
+
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .signup-container {
+      padding: 1rem;
+    }
+
+    .signup-card {
+      flex-direction: column;
+      max-width: 400px;
+      min-height: auto;
+    }
+
+    .left-section {
+      padding: 2rem;
+      min-height: auto;
+    }
+
+    .brand-logo {
+      position: static;
+      margin-bottom: 1rem;
+    }
+
+    .main-illustration {
+      width: 200px;
+      height: 140px;
+    }
+
+    .teacher-icon {
+      font-size: 48px;
+    }
+
+    .brand-title {
+      font-size: 1.75rem;
+    }
+
+    .features-list {
+      display: none;
+    }
+
+    .right-section {
+      padding: 2rem;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .signup-container {
+      padding: 0.5rem;
+    }
+
+    .left-section,
+    .right-section {
+      padding: 1.5rem;
+    }
+  }
+</style>
+{% endblock %} {% block full_content %}
+<div class="signup-container">
+  <div class="signup-card">
+    <!-- Left Section -->
+    <div class="left-section">
+      <div class="brand-logo">
+        <i class="fas fa-chalkboard-teacher"></i>
+      </div>
+
+      <div class="illustration-container">
+        <div class="main-illustration">
+          <i class="fas fa-chalkboard-teacher teacher-icon"></i>
+          <div class="floating-elements">
+            <div class="floating-element element-1"></div>
+            <div class="floating-element element-2"></div>
+            <div class="floating-element element-3"></div>
+            <div class="floating-element element-4"></div>
+          </div>
+        </div>
+      </div>
+
+      <h1 class="brand-title">Teacher Portal</h1>
+      <p class="brand-subtitle">
+        Join MyAcademia as a teacher to manage your courses, track student
+        progress, and contribute to educational excellence.
+      </p>
+
+      <div class="features-list">
+        <div class="feature-item">
+          <i class="fas fa-users"></i>
+          <span>Manage Student Records</span>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-chart-bar"></i>
+          <span>Grade & Assessment Tools</span>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-book"></i>
+          <span>Course Management</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="right-section">
+      <div class="signup-form-container">
+        <div class="form-header">
+          <h2 class="form-title">Create Teacher Account</h2>
+          <p class="form-subtitle">Enter your details to get started</p>
+        </div>
+
+        <!-- User Type Selector -->
+        <div class="user-type-selector">
+          <h3>Choose Your Account Type</h3>
+          <div class="user-type-buttons">
+            <a href="{% url 'student_signup' %}" class="user-type-btn">
+              <i class="fas fa-user-graduate"></i>
+              <span>Student</span>
+            </a>
+            <a href="{% url 'teacher_signup' %}" class="user-type-btn active">
+              <i class="fas fa-chalkboard-teacher"></i>
+              <span>Teacher</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Messages Display -->
+        {% if messages %}
+        <div class="messages-container">
+          {% for message in messages %}
+          <div
+            class="alert alert-{{ message.tags }} alert-dismissible fade show"
+            role="alert"
+          >
+            {{ message }}
+            <button
+              type="button"
+              class="btn-close"
+              onclick="this.parentElement.style.display='none'"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Teacher Signup Form -->
+        <form method="post" class="teacher-signup-form" novalidate>
+          {% csrf_token %}
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="{{ form.first_name.id_for_label }}"
+                >First Name</label
+              >
+              {{ form.first_name }} {% if form.first_name.errors %}
+              <div class="text-danger">{{ form.first_name.errors.0 }}</div>
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="{{ form.last_name.id_for_label }}"
+                >Last Name</label
+              >
+              {{ form.last_name }} {% if form.last_name.errors %}
+              <div class="text-danger">{{ form.last_name.errors.0 }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="{{ form.email.id_for_label }}"
+              >Email</label
+            >
+            {{ form.email }} {% if form.email.errors %}
+            <div class="text-danger">{{ form.email.errors.0 }}</div>
+            {% endif %}
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="{{ form.username.id_for_label }}"
+                >Username</label
+              >
+              {{ form.username }} {% if form.username.errors %}
+              <div class="text-danger">{{ form.username.errors.0 }}</div>
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="{{ form.course.id_for_label }}"
+                >Subject/Course</label
+              >
+              {{ form.course }} {% if form.course.errors %}
+              <div class="text-danger">{{ form.course.errors.0 }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="{{ form.password1.id_for_label }}"
+                >Password</label
+              >
+              {{ form.password1 }} {% if form.password1.errors %}
+              <div class="text-danger">{{ form.password1.errors.0 }}</div>
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="{{ form.password2.id_for_label }}"
+                >Confirm Password</label
+              >
+              {{ form.password2 }} {% if form.password2.errors %}
+              <div class="text-danger">{{ form.password2.errors.0 }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Non-field errors (like password mismatch) -->
+          {% if form.non_field_errors %}
+          <div class="form-group">
+            {% for error in form.non_field_errors %}
+            <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <button type="submit" class="btn-signup">
+            Create Teacher Account
+          </button>
+        </form>
+
+        <!-- Login Link -->
+        <div class="login-link">
+          <p>
+            Already have an account?
+            <a href="{% url 'student_login' %}">Sign in</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Auto-hide success messages after 5 seconds
+    const successAlerts = document.querySelectorAll(".alert-success");
+    successAlerts.forEach((alert) => {
+      setTimeout(() => {
+        alert.style.opacity = "0";
+        alert.style.transition = "opacity 0.5s ease";
+        setTimeout(() => {
+          alert.style.display = "none";
+        }, 500);
+      }, 5000);
+    });
+
+    // Form submission handling
+    const form = document.querySelector(".teacher-signup-form");
+    if (form) {
+      form.addEventListener("submit", function (e) {
+        const submitBtn = form.querySelector(".btn-signup");
+        const originalText = submitBtn.innerHTML;
+
+        submitBtn.innerHTML =
+          '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+        submitBtn.disabled = true;
+
+        // Re-enable button if form validation fails (client-side)
+        setTimeout(() => {
+          if (!form.checkValidity()) {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+          }
+        }, 100);
+      });
+    }
+  });
+</script>
+{% endblock %}
