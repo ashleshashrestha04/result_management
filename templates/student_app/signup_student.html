@@ -527,7 +527,10 @@ endblock %} {% block extra_css %}
               <i class="fas fa-user-graduate"></i>
               <span>Student</span>
             </a>
-            <a href="{% url 'teacher_signup' %}" class="user-type-btn">
+            <a
+              href="{% url 'teacher_app:teacher_signup' %}"
+              class="user-type-btn"
+            >
               <i class="fas fa-chalkboard-teacher"></i>
               <span>Teacher</span>
             </a>

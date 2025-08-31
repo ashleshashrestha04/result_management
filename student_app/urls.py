@@ -6,10 +6,8 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('signup/', views.signup, name='signup'),
     path('student-signup/', views.student_signup, name='student_signup'),
-    path('teacher-signup/', views.teacher_signup, name='teacher_signup'),
     path('student-login/', views.student_login, name='student_login'),
     path('student-dashboard/', views.student_dashboard, name='student_dashboard'),
-    path('teacher-dashboard/', views.teacher_dashboard, name='teacher_dashboard'),
     path('student-logout/', views.student_logout, name='student_logout'),
     
     # Student CRUD routes

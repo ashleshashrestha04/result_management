@@ -1,0 +1,477 @@
+{% extends 'base/base.html' %} 
+
+{% block title %}Students List - MyAcademia{% endblock %} 
+
+{% block extra_css %}
+<style>
+  body {
+    background-color: #f8fafc;
+  }
+
+  .main-container {
+    padding: 2rem 0;
+    min-height: 100vh;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    border-radius: 15px;
+  }
+
+  .page-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .page-subtitle {
+    opacity: 0.9;
+    margin-top: 0.5rem;
+  }
+
+  .stats-card {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    backdrop-filter: blur(10px);
+  }
+
+  .stats-number {
+    font-size: 2rem;
+    font-weight: 800;
+    display: block;
+  }
+
+  .stats-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+
+  .search-section {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .search-form {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 1rem;
+    align-items: end;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-control {
+    padding: 0.8rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+  }
+
+  .btn-search {
+    padding: 0.8rem 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-search:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    color: white;
+  }
+
+  .students-table {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .table {
+    margin: 0;
+  }
+
+  .table thead th {
+    background: #f8f9fa;
+    border: none;
+    padding: 1.2rem 1rem;
+    font-weight: 700;
+    color: #2c3e50;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+  }
+
+  .table tbody td {
+    padding: 1.2rem 1rem;
+    border-top: 1px solid #e9ecef;
+    vertical-align: middle;
+  }
+
+  .table tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+
+  .badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .badge-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+  }
+
+  .badge-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+    color: white;
+  }
+
+  .badge-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+    color: white;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-info {
+    background: #17a2b8;
+    color: white;
+  }
+
+  .btn-info:hover {
+    background: #138496;
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  .btn-warning {
+    background: #ffc107;
+    color: #212529;
+  }
+
+  .btn-warning:hover {
+    background: #e0a800;
+    color: #212529;
+    transform: translateY(-1px);
+  }
+
+  .btn-danger {
+    background: #dc3545;
+    color: white;
+  }
+
+  .btn-danger:hover {
+    background: #c82333;
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .pagination .page-item .page-link {
+    border: none;
+    padding: 0.8rem 1.2rem;
+    color: #667eea;
+    font-weight: 600;
+    border-radius: 10px;
+    margin: 0 0.2rem;
+    transition: all 0.3s ease;
+  }
+
+  .pagination .page-item.active .page-link {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+
+  .pagination .page-item .page-link:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #6c757d;
+  }
+
+  .empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: #dee2e6;
+  }
+
+  .empty-state h3 {
+    margin-bottom: 1rem;
+    color: #495057;
+  }
+
+  @media (max-width: 768px) {
+    .search-form {
+      grid-template-columns: 1fr;
+    }
+
+    .table-responsive {
+      font-size: 0.9rem;
+    }
+
+    .btn-group {
+      flex-direction: column;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h1 class="page-title">
+            <i class="fas fa-users me-3"></i>Students Management
+          </h1>
+          <p class="page-subtitle">
+            Manage and view all student records in your system
+          </p>
+        </div>
+        <div class="col-md-4">
+          <div class="stats-card">
+            <span class="stats-number">{{ total_students }}</span>
+            <div class="stats-label">Total Students</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-section">
+      <form method="GET" class="search-form">
+        <div class="form-group">
+          <label class="form-label">Search Students</label>
+          <input 
+            type="text" 
+            name="search_query" 
+            value="{{ search_form.search_query.value|default:'' }}"
+            class="form-control" 
+            placeholder="Search by name, roll number, email..."
+          >
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Course</label>
+          <select name="course_filter" class="form-control">
+            <option value="">All Courses</option>
+            <option value="Computer Science" {% if search_form.course_filter.value == 'Computer Science' %}selected{% endif %}>Computer Science</option>
+            <option value="Engineering" {% if search_form.course_filter.value == 'Engineering' %}selected{% endif %}>Engineering</option>
+            <option value="Mathematics" {% if search_form.course_filter.value == 'Mathematics' %}selected{% endif %}>Mathematics</option>
+            <option value="Physics" {% if search_form.course_filter.value == 'Physics' %}selected{% endif %}>Physics</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Grade</label>
+          <select name="grade_filter" class="form-control">
+            <option value="">All Grades</option>
+            <option value="A+" {% if search_form.grade_filter.value == 'A+' %}selected{% endif %}>A+</option>
+            <option value="A" {% if search_form.grade_filter.value == 'A' %}selected{% endif %}>A</option>
+            <option value="B+" {% if search_form.grade_filter.value == 'B+' %}selected{% endif %}>B+</option>
+            <option value="B" {% if search_form.grade_filter.value == 'B' %}selected{% endif %}>B</option>
+            <option value="C" {% if search_form.grade_filter.value == 'C' %}selected{% endif %}>C</option>
+            <option value="F" {% if search_form.grade_filter.value == 'F' %}selected{% endif %}>F</option>
+          </select>
+        </div>
+        
+        <button type="submit" class="btn-search">
+          <i class="fas fa-search me-2"></i>Search
+        </button>
+      </form>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mb-4">
+      <a href="{% url 'student_create' %}" class="btn-primary">
+        <i class="fas fa-plus me-2"></i>Add New Student
+      </a>
+    </div>
+
+    <!-- Students Table -->
+    <div class="students-table">
+      {% if page_obj %}
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Roll Number</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Course</th>
+                <th>Marks</th>
+                <th>Grade</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for student in page_obj %}
+                <tr>
+                  <td><strong>{{ student.roll_number }}</strong></td>
+                  <td>{{ student.name }}</td>
+                  <td>{{ student.email }}</td>
+                  <td>{{ student.course }}</td>
+                  <td>{{ student.marks }}%</td>
+                  <td>
+                    <span class="badge 
+                      {% if student.grade == 'A+' or student.grade == 'A' %}badge-success
+                      {% elif student.grade == 'B+' or student.grade == 'B' %}badge-warning
+                      {% else %}badge-danger{% endif %}
+                    ">
+                      {{ student.grade }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="btn-group">
+                      <a href="{% url 'student_detail' student.pk %}" class="btn-sm btn-info">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                      <a href="{% url 'student_update' student.pk %}" class="btn-sm btn-warning">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                      <a href="{% url 'student_delete' student.pk %}" class="btn-sm btn-danger">
+                        <i class="fas fa-trash"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+          <nav aria-label="Students pagination">
+            <ul class="pagination">
+              {% if page_obj.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page=1">
+                    <i class="fas fa-angle-double-left"></i>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">
+                    <i class="fas fa-angle-left"></i>
+                  </a>
+                </li>
+              {% endif %}
+
+              {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                  <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                  </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                  <li class="page-item">
+                    <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}">{{ num }}</a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+
+              {% if page_obj.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">
+                    <i class="fas fa-angle-right"></i>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.paginator.num_pages }}">
+                    <i class="fas fa-angle-double-right"></i>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+        {% endif %}
+
+      {% else %}
+        <div class="empty-state">
+          <i class="fas fa-user-graduate"></i>
+          <h3>No Students Found</h3>
+          <p>There are no students matching your search criteria.</p>
+          <a href="{% url 'student_create' %}" class="btn-primary mt-3">
+            <i class="fas fa-plus me-2"></i>Add First Student
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

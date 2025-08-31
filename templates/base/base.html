@@ -17,6 +17,41 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
 
+    <!-- Global CSS -->
+    <style>
+      body {
+        padding-top: 80px; /* Account for fixed navbar */
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+
+      .page-content {
+        min-height: calc(100vh - 80px);
+      }
+
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #667eea;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #5a6fd8;
+      }
+    </style>
+
     <!-- Custom CSS Block -->
     {% block extra_css %}{% endblock %}
   </head>
@@ -26,7 +61,9 @@
 
     <!-- Main Content -->
     {% block full_content %}
-    <div class="container mt-4">{% block content %}{% endblock %}</div>
+    <div class="page-content">
+      <div class="container mt-4">{% block content %}{% endblock %}</div>
+    </div>
     {% endblock %}
 
     <!-- Bootstrap JS Bundle with Popper -->

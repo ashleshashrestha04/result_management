@@ -171,7 +171,7 @@ def student_dashboard(request):
 
 @login_required
 def teacher_dashboard(request):
-    return render(request, 'student_app/teacher_dashboard.html')
+    return render(request, 'teacher_app/dashboard.html')
 
 def student_logout(request):
     logout(request)

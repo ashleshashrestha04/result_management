@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-7o-2k(+%a0i3^-(v@2o5g&6=-a2(m-ci0ac$rol%gw9==8lod#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver']
 
 # CSRF settings for development
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', 'http://localhost:8000']
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'student_app',
+    'teacher_app',
 ]
 
 MIDDLEWARE = [

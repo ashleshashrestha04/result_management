@@ -1,0 +1,464 @@
+{% extends 'base/base.html' %} {% block title %}{{ action }} Student -
+MyAcademia{% endblock %} {% block extra_css %}
+<style>
+  body {
+    background: linear-gradient(135deg, #f8fafc 0%, #e9ecef 100%);
+  }
+
+  .main-container {
+    padding: 2rem 0;
+    min-height: 100vh;
+  }
+
+  .form-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 3rem;
+    border-radius: 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .form-header::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  .form-icon {
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    margin: 0 auto 1.5rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .form-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+
+  .form-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+  }
+
+  .form-card {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .form-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px 20px 0 0;
+  }
+
+  .form-section {
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+    display: flex;
+    align-items: center;
+  }
+
+  .section-title i {
+    margin-right: 0.8rem;
+    color: #667eea;
+  }
+
+  .form-group {
+    margin-bottom: 2rem;
+  }
+
+  .form-label {
+    display: block;
+    margin-bottom: 0.8rem;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .form-label i {
+    margin-right: 0.5rem;
+    color: #667eea;
+    width: 16px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: 15px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #667eea;
+    background-color: white;
+    box-shadow: 0 0 0 0.3rem rgba(102, 126, 234, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .form-control.is-invalid {
+    border-color: #dc3545;
+    background-color: #fff5f5;
+  }
+
+  .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 0.8rem 0 0 0;
+  }
+
+  .errorlist li {
+    color: #dc3545;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    background: #fff5f5;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    border-left: 3px solid #dc3545;
+  }
+
+  .grade-preview {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 2px dashed #dee2e6;
+    margin-top: 1rem;
+  }
+
+  .grade-preview.active {
+    border-color: #667eea;
+    background: linear-gradient(
+      135deg,
+      rgba(102, 126, 234, 0.1) 0%,
+      rgba(118, 75, 162, 0.1) 100%
+    );
+  }
+
+  .button-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e9ecef;
+  }
+
+  .btn-save {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    padding: 1.2rem 3rem;
+    font-size: 1.1rem;
+  }
+
+  .btn-save:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+    color: white;
+  }
+
+  .btn-cancel {
+    background: #6c757d;
+    color: white;
+    padding: 1.2rem 3rem;
+    font-size: 1.1rem;
+  }
+
+  .btn-cancel:hover {
+    background: #5a6268;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(108, 117, 125, 0.3);
+    color: white;
+  }
+
+  @media (max-width: 768px) {
+    .form-card {
+      padding: 2rem 1.5rem;
+    }
+
+    .button-group {
+      flex-direction: column;
+    }
+
+    .form-title {
+      font-size: 2rem;
+    }
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="main-container">
+  <div class="container">
+    <!-- Form Header -->
+    <div class="form-header">
+      <div class="form-icon">
+        <i
+          class="fas fa-{% if action == 'Create' %}plus{% else %}edit{% endif %}"
+        ></i>
+      </div>
+      <h1 class="form-title">{{ action }} Student</h1>
+      <p class="form-subtitle">
+        {% if action == 'Create' %} Add a new student to the system {% else %}
+        Update student information {% endif %}
+      </p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="form-card">
+          <form method="post" id="studentForm">
+            {% csrf_token %}
+
+            <!-- Personal Information Section -->
+            <div class="form-section">
+              <h3 class="section-title">
+                <i class="fas fa-user"></i>
+                Personal Information
+              </h3>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label
+                      for="{{ form.name.id_for_label }}"
+                      class="form-label"
+                    >
+                      <i class="fas fa-signature"></i>Full Name
+                    </label>
+                    {{ form.name }} {% if form.name.errors %}
+                    <ul class="errorlist">
+                      {% for error in form.name.errors %}
+                      <li>{{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label
+                      for="{{ form.roll_number.id_for_label }}"
+                      class="form-label"
+                    >
+                      <i class="fas fa-id-card"></i>Roll Number
+                    </label>
+                    {{ form.roll_number }} {% if form.roll_number.errors %}
+                    <ul class="errorlist">
+                      {% for error in form.roll_number.errors %}
+                      <li>{{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="{{ form.email.id_for_label }}" class="form-label">
+                  <i class="fas fa-envelope"></i>Email Address
+                </label>
+                {{ form.email }} {% if form.email.errors %}
+                <ul class="errorlist">
+                  {% for error in form.email.errors %}
+                  <li>{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Academic Information Section -->
+            <div class="form-section">
+              <h3 class="section-title">
+                <i class="fas fa-graduation-cap"></i>
+                Academic Information
+              </h3>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label
+                      for="{{ form.course.id_for_label }}"
+                      class="form-label"
+                    >
+                      <i class="fas fa-book"></i>Course/Program
+                    </label>
+                    {{ form.course }} {% if form.course.errors %}
+                    <ul class="errorlist">
+                      {% for error in form.course.errors %}
+                      <li>{{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label
+                      for="{{ form.marks.id_for_label }}"
+                      class="form-label"
+                    >
+                      <i class="fas fa-percentage"></i>Marks (0-100)
+                    </label>
+                    {{ form.marks }} {% if form.marks.errors %}
+                    <ul class="errorlist">
+                      {% for error in form.marks.errors %}
+                      <li>{{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="{{ form.grade.id_for_label }}" class="form-label">
+                  <i class="fas fa-medal"></i>Grade
+                </label>
+                {{ form.grade }} {% if form.grade.errors %}
+                <ul class="errorlist">
+                  {% for error in form.grade.errors %}
+                  <li>{{ error }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+              </div>
+
+              <!-- Grade Preview -->
+              <div id="gradePreview" class="grade-preview">
+                <i class="fas fa-info-circle me-2"></i>
+                Grade will be calculated automatically based on marks
+              </div>
+            </div>
+
+            <!-- Form Buttons -->
+            <div class="button-group">
+              <button type="submit" class="btn btn-save">
+                <i class="fas fa-save me-2"></i>
+                {% if action == 'Create' %}Create Student{% else %}Update
+                Student{% endif %}
+              </button>
+              <a
+                href="{% if student %}{% url 'student_detail' student.pk %}{% else %}{% url 'student_list' %}{% endif %}"
+                class="btn btn-cancel"
+              >
+                <i class="fas fa-times me-2"></i>Cancel
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Auto-calculate grade based on marks
+  document.addEventListener("DOMContentLoaded", function () {
+    const marksInput = document.querySelector("#{{ form.marks.id_for_label }}");
+    const gradeSelect = document.querySelector(
+      "#{{ form.grade.id_for_label }}"
+    );
+    const gradePreview = document.getElementById("gradePreview");
+
+    function calculateGrade(marks) {
+      if (marks >= 90) return "A+";
+      if (marks >= 85) return "A";
+      if (marks >= 80) return "A-";
+      if (marks >= 75) return "B+";
+      if (marks >= 70) return "B";
+      if (marks >= 65) return "B-";
+      if (marks >= 60) return "C+";
+      if (marks >= 55) return "C";
+      if (marks >= 50) return "C-";
+      if (marks >= 45) return "D+";
+      if (marks >= 40) return "D";
+      return "F";
+    }
+
+    function updateGradePreview() {
+      const marks = parseFloat(marksInput.value);
+      if (!isNaN(marks) && marks >= 0 && marks <= 100) {
+        const grade = calculateGrade(marks);
+        gradeSelect.value = grade;
+        gradePreview.innerHTML = `
+                <i class="fas fa-medal me-2"></i>
+                <strong>Calculated Grade: ${grade}</strong> (${marks}% marks)
+            `;
+        gradePreview.classList.add("active");
+      } else {
+        gradePreview.innerHTML = `
+                <i class="fas fa-info-circle me-2"></i>
+                Enter marks (0-100) to calculate grade automatically
+            `;
+        gradePreview.classList.remove("active");
+      }
+    }
+
+    if (marksInput) {
+      marksInput.addEventListener("input", updateGradePreview);
+      updateGradePreview(); // Initial calculation
+    }
+
+    // Form validation
+    const form = document.getElementById("studentForm");
+    form.addEventListener("submit", function (e) {
+      const marks = parseFloat(marksInput.value);
+      if (isNaN(marks) || marks < 0 || marks > 100) {
+        e.preventDefault();
+        alert("Please enter valid marks between 0 and 100");
+        marksInput.focus();
+      }
+    });
+  });
+</script>
+{% endblock %}

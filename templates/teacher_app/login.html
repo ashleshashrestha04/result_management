@@ -1,0 +1,842 @@
+{% extends 'base/base.html' %} {% block title %}Teacher Login - MyAcademia{%
+endblock %} {% block extra_css %}
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .login-container {
+    min-height: calc(100vh - 80px);
+    position: relative;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .login-content {
+    display: flex;
+    width: 100%;
+    max-width: 1400px;
+    min-height: 600px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .left-section {
+    flex: 1;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    min-width: 450px;
+  }
+
+  @media (min-width: 1201px) {
+    .login-content {
+      flex-direction: row !important;
+    }
+
+    .left-section {
+      display: flex !important;
+      min-width: 450px !important;
+    }
+  }
+
+  .image-container {
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .illustration {
+    margin-bottom: 2rem;
+  }
+
+  .main-illustration {
+    width: 100%;
+    height: auto;
+    max-width: 350px;
+    filter: drop-shadow(0 10px 30px rgba(102, 126, 234, 0.2));
+  }
+
+  .welcome-content h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .welcome-content p {
+    font-size: 1rem;
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .features {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    color: #4b5563;
+  }
+
+  .feature-item i {
+    color: #667eea;
+    width: 20px;
+    text-align: center;
+  }
+
+  .right-section {
+    flex: 1;
+    padding: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .form-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .form-header {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .welcome-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+  }
+
+  .welcome-subtitle {
+    color: #6b7280;
+    font-size: 0.95rem;
+  }
+
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .user-type-selector {
+    margin-bottom: 1.5rem;
+  }
+
+  .user-type-buttons {
+    display: flex;
+    gap: 0.5rem;
+    background: #f8fafc;
+    padding: 0.25rem;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .user-type-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #64748b;
+    padding: 0.75rem 0.875rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    text-align: center;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+
+  .user-type-btn:hover {
+    color: #475569;
+    background: rgba(99, 102, 241, 0.05);
+    text-decoration: none;
+  }
+
+  .user-type-btn.active {
+    background: white;
+    color: #6366f1;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .user-type-btn i {
+    font-size: 0.85rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-label {
+    font-weight: 500;
+    color: #374151;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .form-control {
+    padding: 1rem 1.25rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    background-color: #f9fafb;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 48px;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #6366f1;
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  }
+
+  .password-container {
+    position: relative;
+    width: 100%;
+  }
+
+  .password-toggle {
+    position: absolute;
+    right: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    z-index: 10;
+  }
+
+  .password-toggle:hover {
+    color: #6b7280;
+  }
+
+  .password-container {
+    position: relative;
+  }
+
+  .password-toggle {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+  }
+
+  .password-toggle:hover {
+    color: #6b7280;
+  }
+
+  .remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .checkbox-container input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #6366f1;
+  }
+
+  .forgot-password {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .forgot-password:hover {
+    text-decoration: underline;
+  }
+
+  .login-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: white;
+    border: none;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    margin-top: 0.5rem;
+    min-height: 52px;
+  }
+
+  .login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  }
+
+  .signup-link {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: #6b7280;
+  }
+
+  .signup-link a {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .signup-link a:hover {
+    text-decoration: underline;
+  }
+
+  /* Mobile responsive styles */
+  @media (max-width: 1200px) {
+    .login-content {
+      flex-direction: column;
+      max-width: 500px;
+    }
+
+    .left-section {
+      padding: 2rem;
+      min-height: auto;
+      min-width: auto;
+    }
+
+    .welcome-content h2 {
+      font-size: 1.5rem;
+    }
+
+    .right-section {
+      padding: 2rem 1.5rem;
+    }
+
+    .main-illustration {
+      max-width: 280px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .login-content {
+      flex-direction: column;
+      min-height: auto;
+    }
+
+    .left-section {
+      padding: 2rem;
+      min-height: 200px;
+    }
+
+    .right-section {
+      padding: 2rem 1.5rem;
+    }
+
+    .welcome-content h2 {
+      font-size: 1.5rem;
+    }
+
+    .main-illustration {
+      max-width: 250px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .login-container {
+      padding: 1rem;
+    }
+
+    .left-section {
+      padding: 1.5rem;
+    }
+
+    .right-section {
+      padding: 1.5rem 1rem;
+    }
+
+    .user-type-buttons {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .user-type-btn {
+      padding: 0.75rem;
+      font-size: 0.85rem;
+    }
+
+    .social-login {
+      flex-direction: column;
+    }
+  }
+
+  /* Error message styles */
+  .error-message {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .success-message {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #16a34a;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Enhanced mobile user type buttons */
+  @media (max-width: 480px) {
+    .user-type-buttons {
+      flex-direction: row;
+      gap: 0.25rem;
+    }
+
+    .user-type-btn {
+      padding: 0.75rem 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .user-type-btn i {
+      font-size: 0.75rem;
+    }
+  }
+
+  /* Mobile responsive improvements */
+  @media (max-width: 600px) {
+    .user-type-btn {
+      font-size: 0.85rem;
+      padding: 0.75rem 0.5rem;
+    }
+
+    .user-type-btn:hover {
+      background: rgba(99, 102, 241, 0.1);
+    }
+
+    .user-type-btn.active:hover {
+      background: white;
+    }
+  }
+</style>
+{% endblock %} {% block full_content %}
+<div class="login-container">
+  <div class="login-content">
+    <!-- Left Section with Illustration -->
+    <div class="left-section">
+      <div class="image-container">
+        <div class="illustration">
+          <svg
+            class="main-illustration"
+            viewBox="0 0 500 400"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- Teacher at blackboard illustration -->
+            <defs>
+              <linearGradient
+                id="bgGradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+              >
+                <stop offset="0%" stop-color="#667eea" />
+                <stop offset="100%" stop-color="#764ba2" />
+              </linearGradient>
+              <linearGradient
+                id="boardGradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+              >
+                <stop offset="0%" stop-color="#1f2937" />
+                <stop offset="100%" stop-color="#374151" />
+              </linearGradient>
+            </defs>
+
+            <!-- Background circle -->
+            <circle
+              cx="250"
+              cy="200"
+              r="180"
+              fill="url(#bgGradient)"
+              opacity="0.1"
+            />
+
+            <!-- Blackboard -->
+            <rect
+              x="80"
+              y="80"
+              width="280"
+              height="180"
+              rx="8"
+              fill="url(#boardGradient)"
+            />
+            <rect
+              x="85"
+              y="85"
+              width="270"
+              height="170"
+              rx="4"
+              fill="#111827"
+            />
+
+            <!-- Blackboard content (equations) -->
+            <text
+              x="95"
+              y="110"
+              fill="#10b981"
+              font-family="Arial"
+              font-size="14"
+              font-weight="bold"
+            >
+              Class Schedule
+            </text>
+            <line
+              x1="95"
+              y1="120"
+              x2="200"
+              y2="120"
+              stroke="#10b981"
+              stroke-width="2"
+            />
+            <text
+              x="95"
+              y="140"
+              fill="#fbbf24"
+              font-family="Arial"
+              font-size="12"
+            >
+              Math: 9:00 AM
+            </text>
+            <text
+              x="95"
+              y="160"
+              fill="#fbbf24"
+              font-family="Arial"
+              font-size="12"
+            >
+              Science: 11:00 AM
+            </text>
+            <text
+              x="95"
+              y="180"
+              fill="#fbbf24"
+              font-family="Arial"
+              font-size="12"
+            >
+              English: 2:00 PM
+            </text>
+
+            <!-- Mathematical formula -->
+            <text
+              x="220"
+              y="140"
+              fill="#60a5fa"
+              font-family="Arial"
+              font-size="16"
+            >
+              ∑ Success
+            </text>
+            <text
+              x="220"
+              y="160"
+              fill="#60a5fa"
+              font-family="Arial"
+              font-size="12"
+            >
+              = Hard Work
+            </text>
+            <text
+              x="230"
+              y="180"
+              fill="#60a5fa"
+              font-family="Arial"
+              font-size="12"
+            >
+              + Dedication
+            </text>
+
+            <!-- Teacher figure -->
+            <circle cx="180" cy="300" r="25" fill="#fbbf24" />
+            <rect
+              x="165"
+              y="320"
+              width="30"
+              height="40"
+              fill="#6366f1"
+              rx="4"
+            />
+            <rect
+              x="155"
+              y="340"
+              width="15"
+              height="25"
+              fill="#fbbf24"
+              rx="2"
+            />
+            <rect
+              x="195"
+              y="340"
+              width="15"
+              height="25"
+              fill="#fbbf24"
+              rx="2"
+            />
+            <rect
+              x="150"
+              y="360"
+              width="60"
+              height="10"
+              fill="#374151"
+              rx="5"
+            />
+
+            <!-- Teacher's arm pointing to board -->
+            <line
+              x1="195"
+              y1="335"
+              x2="240"
+              y2="200"
+              stroke="#fbbf24"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+
+            <!-- Pointer/chalk -->
+            <circle cx="242" cy="198" r="3" fill="#fbbf24" />
+
+            <!-- Books on desk -->
+            <rect
+              x="120"
+              y="370"
+              width="15"
+              height="20"
+              fill="#ef4444"
+              rx="2"
+            />
+            <rect
+              x="140"
+              y="375"
+              width="15"
+              height="15"
+              fill="#10b981"
+              rx="2"
+            />
+            <rect
+              x="160"
+              y="378"
+              width="15"
+              height="12"
+              fill="#f59e0b"
+              rx="2"
+            />
+
+            <!-- Decorative elements -->
+            <circle cx="350" cy="120" r="8" fill="#fbbf24" opacity="0.6" />
+            <circle cx="380" cy="150" r="6" fill="#10b981" opacity="0.6" />
+            <circle cx="370" cy="200" r="10" fill="#ef4444" opacity="0.6" />
+            <circle cx="400" cy="180" r="7" fill="#6366f1" opacity="0.6" />
+          </svg>
+        </div>
+
+        <div class="welcome-content">
+          <h2>Welcome Back, Teacher!</h2>
+          <p>
+            Access your teaching dashboard to manage students, track progress,
+            and make education impactful.
+          </p>
+        </div>
+
+        <div class="features">
+          <div class="feature-item">
+            <i class="fas fa-users"></i>
+            <span>Manage Student Records</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-chart-line"></i>
+            <span>Track Academic Progress</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Generate Report Cards</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-shield-alt"></i>
+            <span>Secure & Private</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Section with Login Form -->
+    <div class="right-section">
+      <div class="form-container">
+        <div class="form-header">
+          <h1 class="welcome-title">Teacher Login</h1>
+          <p class="welcome-subtitle">
+            Enter your credentials to access your account
+          </p>
+        </div>
+
+        <!-- Messages Display -->
+        {% if messages %}
+        <div class="messages-container">
+          {% for message in messages %}
+          <div
+            class="{% if message.tags == 'error' %}error-message{% else %}success-message{% endif %}"
+          >
+            {{ message }}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Login Form -->
+        <form method="post" class="login-form">
+          {% csrf_token %}
+
+          <!-- User Type Selection -->
+          <div class="user-type-selector">
+            <div class="user-type-buttons">
+              <a href="{% url 'student_login' %}" class="user-type-btn">
+                <i class="fas fa-user-graduate"></i> Student
+              </a>
+              <a
+                href="{% url 'teacher_app:teacher_login' %}"
+                class="user-type-btn active"
+              >
+                <i class="fas fa-chalkboard-teacher"></i> Teacher
+              </a>
+            </div>
+          </div>
+
+          <!-- Username Field -->
+          <div class="form-group">
+            <label for="username" class="form-label">Username</label>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              class="form-control"
+              placeholder="Enter your username"
+              required
+            />
+          </div>
+
+          <!-- Password Field -->
+          <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <div class="password-container">
+              <input
+                type="password"
+                name="password"
+                id="password"
+                class="form-control"
+                placeholder="Enter your password"
+                required
+              />
+              <button
+                type="button"
+                class="password-toggle"
+                onclick="togglePassword()"
+              >
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember Me and Forgot Password -->
+          <div class="remember-forgot">
+            <div class="checkbox-container">
+              <input type="checkbox" id="remember" name="remember" />
+              <label for="remember">Remember me</label>
+            </div>
+          </div>
+
+          <!-- Login Button -->
+          <button type="submit" class="login-btn">
+            Login to Teacher Portal
+          </button>
+
+          <!-- Signup Link -->
+          <div class="signup-link">
+            <p>
+              Don't have a teacher account?
+              <a href="{% url 'teacher_app:teacher_signup' %}">Create one</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Password toggle functionality
+  function togglePassword() {
+    const passwordField = document.getElementById("password");
+    const toggleIcon = document.querySelector(".password-toggle");
+
+    if (passwordField.type === "password") {
+      passwordField.type = "text";
+      toggleIcon.classList.remove("fa-eye");
+      toggleIcon.classList.add("fa-eye-slash");
+    } else {
+      passwordField.type = "password";
+      toggleIcon.classList.remove("fa-eye-slash");
+      toggleIcon.classList.add("fa-eye");
+    }
+  }
+</script>
+{% endblock %}

@@ -1,5 +1,21 @@
 {% extends 'base/base.html' %} {% block title %}Student Dashboard - MyAcademia{%
-endblock %} {% block content %}
+endblock %} {% block extra_css %}
+<style>
+  .card {
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .table th {
+    border-top: none;
+    font-weight: 600;
+  }
+</style>
+{% endblock %} {% block content %}
 <div class="container mt-4">
   <!-- Welcome Section -->
   <div class="row mb-4">
@@ -191,20 +207,4 @@ endblock %} {% block content %}
     </div>
   </div>
 </div>
-{% endblock %} {% block extra_css %}
-<style>
-  .card {
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .btn:hover {
-    transform: translateY(-1px);
-  }
-
-  .table th {
-    border-top: none;
-    font-weight: 600;
-  }
-</style>
 {% endblock %}
