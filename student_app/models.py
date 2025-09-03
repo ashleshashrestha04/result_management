@@ -4,6 +4,7 @@ from django.utils import timezone
 
 
 class Student(models.Model):
+    user = models.OneToOneField('auth.User', on_delete=models.CASCADE, related_name='student_profile', null=True, blank=True)
     """Model representing a student in the system"""
     
     GRADE_CHOICES = [

@@ -1,0 +1,45 @@
+{% extends 'base/base.html' %} {% block title %}My Results - MyAcademia{%endblock %} {% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">My Results</h2>
+  {% if student %}
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Subject</th>
+        <th>Grade</th>
+        <th>Status</th>
+        <th>Last Updated By</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Mathematics</td>
+        <td><span class="badge bg-success">A+</span></td>
+        <td><i class="fas fa-check-circle text-success"></i></td>
+        <td>Mr. Sharma</td>
+      </tr>
+      <tr>
+        <td>Science</td>
+        <td><span class="badge bg-primary">B+</span></td>
+        <td><i class="fas fa-check-circle text-success"></i></td>
+        <td>Ms. Karki</td>
+      </tr>
+      <tr>
+        <td>English</td>
+        <td><span class="badge bg-warning">B</span></td>
+        <td><i class="fas fa-check-circle text-success"></i></td>
+        <td>Mr. Sharma</td>
+      </tr>
+      <tr>
+        <td>History</td>
+        <td><span class="badge bg-secondary">Pending</span></td>
+        <td><i class="fas fa-clock text-warning"></i></td>
+        <td>-</td>
+      </tr>
+    </tbody>
+  </table>
+  {% else %}
+  <div class="alert alert-warning">No results found for your account.</div>
+  {% endif %}
+</div>
+{% endblock %}

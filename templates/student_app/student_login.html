@@ -44,7 +44,7 @@
     .login-content {
       flex-direction: row !important;
     }
-    
+
     .left-section {
       display: flex !important;
       min-width: 450px !important;
@@ -636,23 +636,22 @@
         {% endfor %} {% endif %}
 
         <!-- Login Form -->
-        <form method="post" class="login-form">
+        <form method="post" action="" class="login-form">
           {% csrf_token %}
 
           <!-- User Type Selection -->
           <div class="user-type-selector">
             <div class="user-type-buttons">
-              <a
-                href="{% url 'student_login' %}"
-                class="user-type-btn active"
-              >
+              <a href="{% url 'student_login' %}" class="user-type-btn active">
                 <i class="fas fa-user-graduate"></i> Student
               </a>
-              <a href="{% url 'teacher_app:teacher_login' %}" class="user-type-btn">
+              <a
+                href="{% url 'teacher_app:teacher_login' %}"
+                class="user-type-btn"
+              >
                 <i class="fas fa-chalkboard-teacher"></i> Teacher
               </a>
             </div>
-          </div>
           </div>
 
           <!-- Email Field -->

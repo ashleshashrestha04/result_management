@@ -1,5 +1,4 @@
-{% extends 'base/base.html' %} {% block title %}Student Dashboard - MyAcademia{%
-endblock %} {% block extra_css %}
+{% extends 'base/base.html' %} {% block title %}Student Dashboard - MyAcademia{%endblock %} {% block extra_css %}
 <style>
   .card {
     border-radius: 10px;
@@ -98,6 +97,7 @@ endblock %} {% block extra_css %}
                   <th>Subject</th>
                   <th>Grade</th>
                   <th>Status</th>
+                  <th>Last Updated By</th>
                 </tr>
               </thead>
               <tbody>
@@ -105,21 +105,25 @@ endblock %} {% block extra_css %}
                   <td>Mathematics</td>
                   <td><span class="badge bg-success">A+</span></td>
                   <td><i class="fas fa-check-circle text-success"></i></td>
+                  <td>Mr. Sharma</td>
                 </tr>
                 <tr>
                   <td>Science</td>
                   <td><span class="badge bg-primary">B+</span></td>
                   <td><i class="fas fa-check-circle text-success"></i></td>
+                  <td>Ms. Karki</td>
                 </tr>
                 <tr>
                   <td>English</td>
                   <td><span class="badge bg-warning">B</span></td>
                   <td><i class="fas fa-check-circle text-success"></i></td>
+                  <td>Mr. Sharma</td>
                 </tr>
                 <tr>
                   <td>History</td>
                   <td><span class="badge bg-secondary">Pending</span></td>
                   <td><i class="fas fa-clock text-warning"></i></td>
+                  <td>-</td>
                 </tr>
               </tbody>
             </table>
@@ -136,13 +140,13 @@ endblock %} {% block extra_css %}
         <div class="card-body">
           <div class="row">
             <div class="col-6 mb-3">
-              <a href="#" class="btn btn-outline-primary w-100">
+              <a href="{% url 'student_results' %}" class="btn btn-outline-primary w-100">
                 <i class="fas fa-eye d-block mb-2"></i>
                 View Results
               </a>
             </div>
             <div class="col-6 mb-3">
-              <a href="#" class="btn btn-outline-success w-100">
+              <a href="#" class="btn btn-outline-success w-100" onclick="alert('Download feature coming soon!')">
                 <i class="fas fa-download d-block mb-2"></i>
                 Download Report
               </a>
@@ -154,7 +158,7 @@ endblock %} {% block extra_css %}
               </a>
             </div>
             <div class="col-6 mb-3">
-              <a href="#" class="btn btn-outline-info w-100">
+              <a href="mailto:support@myacademia.com" class="btn btn-outline-info w-100">
                 <i class="fas fa-envelope d-block mb-2"></i>
                 Contact Support
               </a>
@@ -166,26 +170,7 @@ endblock %} {% block extra_css %}
   </div>
 
   <!-- Recent Activity -->
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-header">
-          <h5><i class="fas fa-history me-2"></i>Recent Activity</h5>
-        </div>
-        <div class="card-body">
-          <div class="list-group list-group-flush">
-            <div
-              class="list-group-item d-flex justify-content-between align-items-center"
-            >
-              <div>
-                <i class="fas fa-check-circle text-success me-2"></i>
-                Mathematics result published
-              </div>
-              <small class="text-muted">2 days ago</small>
-            </div>
-            <div
-              class="list-group-item d-flex justify-content-between align-items-center"
-            >
+          <div class="row">
               <div>
                 <i class="fas fa-info-circle text-info me-2"></i>
                 Profile updated successfully

@@ -1,3 +1,16 @@
+from django.contrib.auth.decorators import login_required
+
+# ...existing imports...
+
+@login_required
+def student_results(request):
+    student = None
+    try:
+        student = Student.objects.get(user=request.user)
+    except Student.DoesNotExist:
+        pass
+    return render(request, 'student_app/student_results.html', {'student': student})
+# ...existing code...
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -138,14 +151,22 @@ def teacher_signup(request):
 def student_login(request):
     """Combined login page for both students and teachers"""
     if request.method == 'POST':
-        username = request.POST.get('username')
+        email = request.POST.get('username')
         password = request.POST.get('password')
         user_type = request.POST.get('user_type', 'student')  # Default to student
-        
-        user = authenticate(request, username=username, password=password)
+
+        # Look up the user by email
+        from django.contrib.auth.models import User
+        try:
+            user_obj = User.objects.get(email=email)
+            username = user_obj.username
+        except User.DoesNotExist:
+            username = None
+
+        user = authenticate(request, username=username, password=password) if username else None
         if user is not None:
             login(request, user)
-            
+
             # Check if user type matches their profile
             try:
                 if user_type == 'student':
@@ -161,9 +182,10 @@ def student_login(request):
                 messages.success(request, f'Welcome back, {user.get_full_name()}!')
                 return redirect('student_dashboard')
         else:
-            messages.error(request, 'Invalid username or password. Please try again.')
-    
-    return render(request, 'student_app/student_login.html')
+            messages.error(request, 'Invalid email or password. Please try again.')
+
+    context = {}
+    return render(request, 'student_app/student_login.html', context)
 
 @login_required
 def student_dashboard(request):
@@ -181,6 +203,15 @@ def student_logout(request):
 
 # ============== STUDENT CRUD VIEWS ==============
 
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+def is_teacher(user):
+    # Only allow users with a Teacher profile
+    from teacher_app.models import TeacherProfile
+    return user.is_authenticated and TeacherProfile.objects.filter(user=user).exists()
+
+@login_required
+@user_passes_test(is_teacher)
 def student_list(request):
     """Display list of all students with search and pagination"""
     students = Student.objects.all()
@@ -219,6 +250,8 @@ def student_list(request):
     return render(request, 'student_app/student_list.html', context)
 
 
+@login_required
+@user_passes_test(is_teacher)
 def student_detail(request, pk):
     """Display detailed view of a single student"""
     student = get_object_or_404(Student, pk=pk)
@@ -228,6 +261,8 @@ def student_detail(request, pk):
     return render(request, 'student_app/student_detail.html', context)
 
 
+@login_required
+@user_passes_test(is_teacher)
 def student_create(request):
     """Create a new student"""
     if request.method == 'POST':
@@ -246,6 +281,8 @@ def student_create(request):
     return render(request, 'student_app/student_form.html', context)
 
 
+@login_required
+@user_passes_test(is_teacher)
 def student_update(request, pk):
     """Update an existing student"""
     student = get_object_or_404(Student, pk=pk)
@@ -267,6 +304,8 @@ def student_update(request, pk):
     return render(request, 'student_app/student_form.html', context)
 
 
+@login_required
+@user_passes_test(is_teacher)
 def student_delete(request, pk):
     """Delete a student"""
     student = get_object_or_404(Student, pk=pk)
