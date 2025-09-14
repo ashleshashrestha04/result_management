@@ -1,8 +1,36 @@
 {% extends 'base/base.html' %} {% block title %}Student Dashboard - MyAcademia{%endblock %} {% block extra_css %}
 <style>
   .card {
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-r            <div class="col-6 mb-3">
+              <a href="{% url 'predict_performance' %}" class="btn btn-outline-primary w-100">
+                <i class="fas fa-brain d-block mb-2"></i>
+                AI Prediction
+              </a>
+            </div>
+            <div class="col-6 mb-3">
+              <a href="{% url 'performance_analytics' %}" class="btn btn-outline-success w-100">
+                <i class="fas fa-analytics d-block mb-2"></i>
+                Analytics
+              </a>
+            </div>
+            <div class="col-6 mb-3">
+              <a href="#" class="btn btn-outline-secondary w-100">
+                <i class="fas fa-download d-block mb-2"></i>
+                Download Report
+              </a>
+            </div>
+            <div class="col-6 mb-3">
+              <a href="#" class="btn btn-outline-warning w-100">
+                <i class="fas fa-user-edit d-block mb-2"></i>
+                Update Profile
+              </a>
+            </div>
+            <div class="col-6 mb-3">
+              <a href="mailto:support@myacademia.com" class="btn btn-outline-info w-100">
+                <i class="fas fa-envelope d-block mb-2"></i>
+                Contact Support
+              </a>
+            </div>box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   .btn:hover {
@@ -146,7 +174,19 @@
               </a>
             </div>
             <div class="col-6 mb-3">
-              <a href="#" class="btn btn-outline-success w-100" onclick="alert('Download feature coming soon!')">
+              <a href="{% url 'predict_performance' %}" class="btn btn-outline-success w-100">
+                <i class="fas fa-brain d-block mb-2"></i>
+                AI Prediction
+              </a>
+            </div>
+            <div class="col-6 mb-3">
+              <a href="{% url 'performance_analytics' %}" class="btn btn-outline-info w-100">
+                <i class="fas fa-chart-line d-block mb-2"></i>
+                Analytics
+              </a>
+            </div>
+            <div class="col-6 mb-3">
+              <a href="#" class="btn btn-outline-secondary w-100" onclick="alert('Download feature coming soon!')">
                 <i class="fas fa-download d-block mb-2"></i>
                 Download Report
               </a>
@@ -158,7 +198,7 @@
               </a>
             </div>
             <div class="col-6 mb-3">
-              <a href="mailto:support@myacademia.com" class="btn btn-outline-info w-100">
+              <a href="mailto:support@myacademia.com" class="btn btn-outline-dark w-100">
                 <i class="fas fa-envelope d-block mb-2"></i>
                 Contact Support
               </a>

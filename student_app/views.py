@@ -21,6 +21,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from .models import Student, Teacher
 from .forms import StudentForm, TeacherForm, StudentSearchForm, TeacherSearchForm, StudentSignupForm, TeacherSignupForm
+from ml_models.predictor import predictor
 
 # Create your views here.
 def home(request):  
@@ -479,3 +480,85 @@ def get_student_grade(request, pk):
         'grade': student.grade,
         'marks': float(student.marks),
     })
+
+
+@login_required
+def predict_performance(request):
+    """ML-powered student performance prediction view"""
+    if request.method == 'POST':
+        try:
+            # Get input data from form
+            student_data = {
+                'gender': request.POST.get('gender'),
+                'race_ethnicity': request.POST.get('race_ethnicity'),
+                'parental_level_of_education': request.POST.get('parental_level_of_education'),
+                'lunch': request.POST.get('lunch'),
+                'test_preparation_course': request.POST.get('test_preparation_course'),
+                'study_hours_per_week': int(request.POST.get('study_hours_per_week', 0)),
+                'attendance_rate': float(request.POST.get('attendance_rate', 0)),
+                'previous_grade': float(request.POST.get('previous_grade', 0)),
+            }
+            
+            # Make prediction
+            predicted_grade, confidence = predictor.predict_grade(student_data)
+            
+            if predicted_grade is not None:
+                # Generate recommendations
+                recommendations = predictor.generate_recommendations(student_data, predicted_grade)
+                
+                context = {
+                    'prediction_made': True,
+                    'predicted_grade': predicted_grade,
+                    'confidence': confidence,
+                    'recommendations': recommendations,
+                    'student_data': student_data,
+                }
+                
+                messages.success(request, f'Prediction completed! Expected grade: {predicted_grade}')
+            else:
+                messages.error(request, f'Prediction failed: {confidence}')
+                context = {'prediction_made': False}
+        
+        except Exception as e:
+            messages.error(request, f'Error making prediction: {str(e)}')
+            context = {'prediction_made': False}
+    else:
+        context = {'prediction_made': False}
+    
+    return render(request, 'student_app/predict_performance.html', context)
+
+
+@login_required
+def performance_analytics(request):
+    """View for performance analytics and insights"""
+    context = {
+        'user': request.user,
+    }
+    
+    try:
+        student = Student.objects.get(user=request.user)
+        context['student'] = student
+        
+        # If student has grades, provide basic analytics
+        if student.marks:
+            current_grade = float(student.marks)
+            context['current_grade'] = current_grade
+            
+            # Generate basic insights
+            if current_grade >= 90:
+                context['performance_level'] = 'Excellent'
+                context['performance_color'] = 'success'
+            elif current_grade >= 80:
+                context['performance_level'] = 'Good'
+                context['performance_color'] = 'info'
+            elif current_grade >= 70:
+                context['performance_level'] = 'Average'
+                context['performance_color'] = 'warning'
+            else:
+                context['performance_level'] = 'Needs Improvement'
+                context['performance_color'] = 'danger'
+        
+    except Student.DoesNotExist:
+        pass
+    
+    return render(request, 'student_app/performance_analytics.html', context)

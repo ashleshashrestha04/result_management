@@ -1,0 +1,317 @@
+{% extends 'base/base.html' %} {% block title %}Performance Analytics -
+MyAcademia{% endblock %} {% block extra_css %}
+<style>
+  .analytics-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease;
+  }
+
+  .analytics-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .performance-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .performance-badge.excellent {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+  }
+
+  .performance-badge.good {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+  }
+
+  .performance-badge.average {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    color: white;
+  }
+
+  .performance-badge.needs-improvement {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-radius: 15px;
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 1rem;
+    opacity: 0.9;
+  }
+
+  .feature-btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin: 0.5rem;
+  }
+
+  .feature-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    color: white;
+    text-decoration: none;
+  }
+
+  .insight-box {
+    background: linear-gradient(135deg, #a7f5f5, #74b9ff);
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-bottom: 1.5rem;
+  }
+
+  .chart-placeholder {
+    background: #f8f9fa;
+    height: 300px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    font-size: 1.2rem;
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="mb-4">
+        <i class="fas fa-analytics me-2"></i>
+        Performance Analytics Dashboard
+      </h2>
+      <p class="lead mb-4">
+        Track your academic progress and get insights to improve your
+        performance.
+      </p>
+    </div>
+  </div>
+
+  {% if student %}
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="analytics-card">
+        <h3 class="mb-3">
+          <i class="fas fa-user-graduate me-2"></i>
+          Your Performance Overview
+        </h3>
+
+        {% if current_grade %}
+        <div class="mb-3">
+          <span
+            class="performance-badge {{ performance_level|lower|cut:' '|cut:'s' }}"
+          >
+            {{ performance_level }}
+          </span>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-item">
+            <span class="stat-number">{{ current_grade }}%</span>
+            <span class="stat-label">Current Grade</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{{ student.roll_number }}</span>
+            <span class="stat-label">Roll Number</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number"
+              >{{ student.subject|default:"General" }}</span
+            >
+            <span class="stat-label">Subject</span>
+          </div>
+        </div>
+
+        <div class="insight-box">
+          <h5><i class="fas fa-lightbulb me-2"></i>Performance Insights</h5>
+          {% if current_grade >= 90 %}
+          <p class="mb-0">
+            🎉 Excellent work! You're in the top tier. Keep maintaining this
+            level of performance.
+          </p>
+          {% elif current_grade >= 80 %}
+          <p class="mb-0">
+            👍 Good performance! With some additional effort, you could reach
+            excellence.
+          </p>
+          {% elif current_grade >= 70 %}
+          <p class="mb-0">
+            📈 Average performance. Focus on consistent study habits to improve
+            your grades.
+          </p>
+          {% else %}
+          <p class="mb-0">
+            ⚡ There's significant room for improvement. Consider using our AI
+            prediction tool for personalized recommendations.
+          </p>
+          {% endif %}
+        </div>
+        {% else %}
+        <div class="text-center py-4">
+          <i class="fas fa-chart-line fa-5x text-muted mb-3"></i>
+          <h4 class="text-muted">No grades recorded yet</h4>
+          <p class="text-muted">
+            Your grades will appear here once they are entered by your teachers.
+          </p>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="analytics-card">
+        <h3 class="mb-3">
+          <i class="fas fa-chart-bar me-2"></i>
+          Performance Trends
+        </h3>
+        <div class="chart-placeholder">
+          <div class="text-center">
+            <i class="fas fa-chart-line fa-3x mb-2"></i>
+            <div>Performance trend chart will appear here</div>
+            <small class="text-muted">(Feature coming soon)</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="analytics-card">
+        <h4 class="mb-3">
+          <i class="fas fa-rocket me-2"></i>
+          AI-Powered Tools
+        </h4>
+        <p class="text-muted mb-3">
+          Use our advanced ML tools to boost your performance:
+        </p>
+
+        <div class="d-grid gap-2">
+          <a
+            href="{% url 'predict_performance' %}"
+            class="feature-btn text-center"
+          >
+            <i class="fas fa-brain me-2"></i>
+            Grade Prediction
+          </a>
+          <a href="#" class="feature-btn text-center" style="opacity: 0.6">
+            <i class="fas fa-book me-2"></i>
+            Study Plan Generator
+            <small class="d-block" style="font-size: 0.8rem">Coming Soon</small>
+          </a>
+          <a href="#" class="feature-btn text-center" style="opacity: 0.6">
+            <i class="fas fa-target me-2"></i>
+            Goal Tracker
+            <small class="d-block" style="font-size: 0.8rem">Coming Soon</small>
+          </a>
+        </div>
+      </div>
+
+      <div class="analytics-card">
+        <h4 class="mb-3">
+          <i class="fas fa-info-circle me-2"></i>
+          Quick Tips
+        </h4>
+        <div class="mb-2">
+          <strong>📚 Study Smart:</strong> Quality over quantity - focused study
+          sessions are more effective.
+        </div>
+        <div class="mb-2">
+          <strong>⏰ Time Management:</strong> Break study time into manageable
+          chunks with regular breaks.
+        </div>
+        <div class="mb-2">
+          <strong>🎯 Set Goals:</strong> Define clear, achievable academic
+          targets for motivation.
+        </div>
+        <div class="mb-2">
+          <strong>📊 Track Progress:</strong> Regular self-assessment helps
+          identify improvement areas.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% else %}
+  <div class="row">
+    <div class="col-12">
+      <div class="analytics-card text-center">
+        <i class="fas fa-user-plus fa-5x text-muted mb-3"></i>
+        <h3 class="text-muted">Complete Your Profile</h3>
+        <p class="text-muted mb-4">
+          To access detailed analytics and AI-powered features, please complete
+          your student profile first.
+        </p>
+        <a href="{% url 'student_create' %}" class="feature-btn">
+          <i class="fas fa-user-edit me-2"></i>
+          Complete Profile
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="analytics-card">
+        <h3 class="mb-3">
+          <i class="fas fa-graduation-cap me-2"></i>
+          Academic Resources
+        </h3>
+        <div class="row">
+          <div class="col-md-4">
+            <h5>📖 Study Materials</h5>
+            <p class="text-muted">
+              Access curated study resources and materials for your subjects.
+            </p>
+          </div>
+          <div class="col-md-4">
+            <h5>👥 Study Groups</h5>
+            <p class="text-muted">
+              Connect with classmates for collaborative learning sessions.
+            </p>
+          </div>
+          <div class="col-md-4">
+            <h5>🎓 Expert Help</h5>
+            <p class="text-muted">
+              Get assistance from teachers and tutors when you need it most.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

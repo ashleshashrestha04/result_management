@@ -31,4 +31,8 @@ urlpatterns = [
     path('api/students/search/', views.student_search_api, name='student_search_api'),
     path('api/teachers/search/', views.teacher_search_api, name='teacher_search_api'),
     path('api/students/<int:pk>/grade/', views.get_student_grade, name='get_student_grade'),
+    
+    # ML-powered features
+    path('predict-performance/', views.predict_performance, name='predict_performance'),
+    path('performance-analytics/', views.performance_analytics, name='performance_analytics'),
 ]
